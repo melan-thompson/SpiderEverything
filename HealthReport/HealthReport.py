@@ -1,5 +1,5 @@
 import time
-
+import os
 
 def SJTULogin(diver, username="melan_thompson", password="xwp13030"):
     def captchaOCR(filename, threshold=200):
@@ -42,6 +42,8 @@ def SJTULogin(diver, username="melan_thompson", password="xwp13030"):
             print("Successfully log in")
             break
 
+    # 删除产生的文件
+    os.remove("captcha.png")
     return driver
 
 
@@ -72,5 +74,6 @@ if __name__ == '__main__':
     # 跳转之后证明填写成功
     while True:
         if driver.current_url != url1:
+            print("Bye!!")
             driver.close()
             break
