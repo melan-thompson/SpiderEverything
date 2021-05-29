@@ -121,7 +121,7 @@ if __name__ == '__main__':
     #     if localtime.tm_hour == 23 and localtime.tm_min == 26 and localtime.tm_sec >= 0:
     #         break
 
-    time.sleep(0.1)#等待一下
+    time.sleep(0.01)#等待一下
     driver.refresh()
     # time.sleep(10)
     # 对应的日日期
@@ -155,6 +155,6 @@ if __name__ == '__main__':
         driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
                                      "1]/label[1]/span[1]/span[1]").click()
 
-        # driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
-        #                              "2]/button[2]").click()
+        driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
+                                     "2]/button[2]").click()
 
