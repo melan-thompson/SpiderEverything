@@ -9,13 +9,16 @@
 
 ## selenium driver
 
+1. python selenium 安装
+
 ```
 pip install selenium
 ```
 
-下载对应的浏览器驱动，注意要下载跟浏览器对应版本的driver,然后复制到chrome.exe所在的文件夹下面，一般是C:\Program Files\Google\Chrome\Application
+2. 下载对应的浏览器驱动，注意要下载跟浏览器对应版本的driver,然后复制到chrome.exe所在的文件夹下面，一般是C:\Program Files\Google\Chrome\Application
 
-输入
+3. 验证是否安装成功，运行以下python语句
+
 ```
 from selenium import webdriver
 driver = webdriver.Chrome()
