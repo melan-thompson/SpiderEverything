@@ -8,5 +8,6 @@ pip install selenium
 ```
 from selenium import webdriver
 driver = webdriver.Chrome()
-driver.get("https://ssc.sjtu.edu.cn/f/dae8d35a")
+driver.get("https://www.baidu.com")
 ```
+如果能正常打开百度页面，则说明浏览器驱动安装正确。
