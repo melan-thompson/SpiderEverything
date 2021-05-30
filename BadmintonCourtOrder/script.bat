@@ -1,0 +1,2 @@
+python badmintonOrder.py
+exit

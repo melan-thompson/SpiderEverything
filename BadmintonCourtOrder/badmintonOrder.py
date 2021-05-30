@@ -170,9 +170,9 @@ class BadmintonCourtOrderer:
                 "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
                 "1]/label[1]/span[1]/span[1]").click()
 
-            # self.driver.find_element_by_xpath(
-            #     "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
-            #     "2]/button[2]").click()
+            self.driver.find_element_by_xpath(
+                "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
+                "2]/button[2]").click()
 
     def email(self,mail="1303061669@qq.com",paymethod="支付宝"):
         """
@@ -183,7 +183,6 @@ class BadmintonCourtOrderer:
         pass
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     order = BadmintonCourtOrderer()
     order.login(username="melan_thompson",password="xwp13030")
