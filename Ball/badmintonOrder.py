@@ -3,7 +3,7 @@ import os
 from selenium.webdriver.support.wait import WebDriverWait
 
 
-def SJTULogin(diver, username="melan_thompson", password="xwp13030"):
+def SJTULogin(driver, username="melan_thompson", password="xwp13030"):
     def captchaOCR(filename, threshold=200):
         from PIL import Image
         import pytesseract
@@ -38,7 +38,7 @@ def SJTULogin(diver, username="melan_thompson", password="xwp13030"):
         # 提交
         driver.find_element_by_id("submit-button").click()
         time.sleep(0.1)
-        nexturl = diver.current_url
+        nexturl = driver.current_url
         print(nexturl)
         if "jaccount.sjtu.edu.cn" not in nexturl:
             print("Successfully log in")
@@ -55,22 +55,6 @@ def xpathOfPlayground(timex, n):
              "{}]/div[1]/div[1]".format(timex - 6, n)
     print(_xpath)
     return _xpath
-
-
-# 跳转到霍英东羽毛球预定界面
-def goToPlayGroudOrder(driver):
-    # 登录界面
-    driver.find_element_by_xpath("//body/div[@id='app']/div[@id='logoin']/div[1]/div[1]/div[2]/button[1]").click()
-    SJTULogin(driver)
-
-    # 点击羽毛球
-    time.sleep(0.1)
-    driver.find_element_by_xpath(
-        "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[1]/div[1]/div[1]/ul[1]/li[5]/a[1]/img[1]").click()
-
-    # 点击霍英东
-    time.sleep(0.1)
-    driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[1]/div[5]/div[2]/ul[1]/li[1]/div[1]").click()
 
 
 # 点击场地，需要修改如果当场地被预定时的操作
@@ -96,65 +80,113 @@ def orderPlaygroud(driver, tt=[17, 18], num=12, numtooder=2):
             print("时间 {} 已经被抢完\n\n".format(ti))
         if orderednum == numtooder:
             print("成功抢到{}个场地!!!".format(orderednum))
-            return True
+            return orderednum
     else:
-        print("所有时间段都已经遍历完，但是没有抢到 {} 个场地".format(numtooder))
-        return False
+        print("所有时间段都已经遍历完，但是没有抢到 {} 个场地，只抢到{}个场地".format(numtooder, orderednum))
+        return orderednum
 
     # if len(tt) == 2:
     #     path2 = xpathOfPlayground(tt[1], numOfPlay[1])
     #     driver.find_element_by_xpath(path2).click()
 
 
+class BadmintonCourtOrderer:
+    def __init__(self, url="https://sports.sjtu.edu.cn/pc/?locale=zh#/Venue/1", OrderTime=None):
+        from selenium import webdriver
+        self.driver = webdriver.Chrome()
+        self.driver.get(url)
+        if OrderTime is None:
+            # 默认预定时间为今天后一周
+            from datetime import datetime, timedelta
+            day = datetime.now() + timedelta(days=7)
+            self.OrderTime = day.strftime("%Y-%m-%d")
+        else:
+            self.OrderTime = OrderTime
+        print("即将预定{}这一天的场地".format(self.OrderTime))
+
+    def login(self, username="melan_thompson", password="xwp13030"):
+        # try:
+        # 登录界面
+        import time
+        time.sleep(0.5)
+        self.driver.find_element_by_xpath(
+            "//body/div[@id='app']/div[@id='logoin']/div[1]/div[1]/div[2]/button[1]").click()
+
+        SJTULogin(self.driver, username, password)
+
+        # 点击羽毛球
+        time.sleep(0.1)
+        self.driver.find_element_by_xpath(
+            "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[1]/div[1]/div[1]/ul[1]/li[5]/a[1]/img[1]").click()
+
+        # 点击霍英东
+        time.sleep(0.1)
+        self.driver.find_element_by_xpath(
+            "/html[1]/body[1]/div[1]/div[2]/div[1]/div[5]/div[2]/ul[1]/li[1]/div[1]").click()
+        # except:
+        #     print("登录失败！！！请重新登录")
+        #     return False
+
+    def wait(self, hour=12, min=0, sec=0):
+        import time
+        while True:
+            localtime = time.localtime(time.time())
+            print(time.asctime(localtime))
+            if localtime.tm_hour == hour and localtime.tm_min == min and localtime.tm_sec >= sec:
+                time.sleep(0.01)  # 等待一下
+                self.driver.refresh()
+                return
+
+    def refresh(self, refreshIntervel=2, DetectFrequency=0.01):
+        wait = WebDriverWait(self.driver, refreshIntervel, DetectFrequency)
+        # 2s两个元素还没加载出来则刷新一下浏览器
+        while True:
+            try:
+                wait.until(lambda x: self.driver.find_element_by_id("tab-" + self.OrderTime),
+                           "场地加载超时")
+                self.driver.find_element_by_id("tab-" + self.OrderTime).click()
+                path = xpathOfPlayground(12, 1)
+                # 点击场地,场地加载比较慢，所以需要等待
+                wait.until(lambda x: self.driver.find_element_by_xpath(path),
+                           "场地加载超时")
+            except:
+                self.driver.refresh()
+            else:
+                return
+
+    def tickAndOrder(self, oderHour=[18, 19]):
+        if orderPlaygroud(self.driver, oderHour) > 0:
+            # 点击下单
+            self.driver.find_element_by_xpath(
+                "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div["
+                "3]/button[1]").click()
+
+            # 点击本人已经阅读
+            wait = WebDriverWait(self.driver, 10, 0.01)
+            wait.until(lambda x: self.driver.find_element_by_xpath(
+                "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
+                "1]/label[1]/span[1]/span[1]"), "场地加载超时")
+            self.driver.find_element_by_xpath(
+                "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
+                "1]/label[1]/span[1]/span[1]").click()
+
+            # self.driver.find_element_by_xpath(
+            #     "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
+            #     "2]/button[2]").click()
+
+    def email(self,mail="1303061669@qq.com",paymethod="支付宝"):
+        """
+        将微信或者支付宝支付的二维码图片发送到邮箱
+        :param mail:
+        :return:
+        """
+        pass
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    from selenium import webdriver
-
-    driver = webdriver.Chrome()
-    driver.get("https://sports.sjtu.edu.cn/pc/?locale=zh#/Venue/1")
-
-    goToPlayGroudOrder(driver)
-
-    # while True:
-    #     localtime = time.localtime(time.time())
-    #     print(time.asctime(localtime))
-    #     if localtime.tm_hour == 23 and localtime.tm_min == 26 and localtime.tm_sec >= 0:
-    #         break
-
-    time.sleep(0.01)#等待一下
-    driver.refresh()
-    # time.sleep(10)
-    # 对应的日日期
-    data = "2021-06-05"
-    wait = WebDriverWait(driver, 2, 0.01)
-    # 2s两个元素还没加载出来则刷新一下浏览器
-    while True:
-        try:
-            wait.until(lambda x: driver.find_element_by_id("tab-" + data),
-                       "场地加载超时")
-            driver.find_element_by_id("tab-" + data).click()
-            path = xpathOfPlayground(12, 1)
-            # 点击场地,场地加载比较慢，所以需要等待
-            wait.until(lambda x: driver.find_element_by_xpath(path),
-                       "场地加载超时")
-        except:
-            driver.refresh()
-        else:
-            break
-
-    if orderPlaygroud(driver, [12, 13, 9]):
-        # 点击下单
-        driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div["
-                                     "3]/button[1]").click()
-
-        # 点击本人已经阅读
-        wait = WebDriverWait(driver, 10, 0.01)
-        wait.until(lambda x: driver.find_element_by_xpath(
-            "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
-            "1]/label[1]/span[1]/span[1]"), "场地加载超时")
-        driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
-                                     "1]/label[1]/span[1]/span[1]").click()
-
-        driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
-                                     "2]/button[2]").click()
-
+    order = BadmintonCourtOrderer()
+    order.login(username="melan_thompson",password="xwp13030")
+    order.wait()
+    order.refresh()
+    order.tickAndOrder([19, 20, 21])
