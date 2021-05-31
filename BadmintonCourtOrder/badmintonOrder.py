@@ -58,26 +58,25 @@ def xpathOfPlayground(timex, n):
 
 
 # 点击场地，需要修改如果当场地被预定时的操作
-def orderPlaygroud(driver, tt=[17, 18], num=12, numtooder=2):
+def orderPlaygroud(driver, tt=[17, 18], numtooder=2,booking_order=[8, 3, 1, 2, 4, 5, 9, 7, 6, 10, 11, 12]):
     orderednum = 0
-    orderlist = [8, 3, 1, 2, 4, 5, 9, 7, 6, 10, 11, 12]
     for ti in tt:
         print("开始抢时间 {} 的场地".format(ti))
-        for i in range(num):
-            xpath = xpathOfPlayground(ti, orderlist[i])
+        for i in range(len(booking_order)):
+            xpath = xpathOfPlayground(ti, booking_order[i])
             driver.find_element_by_xpath(xpath).click()
             try:
                 driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div["
                                              "1]/div[2]/div[1]/div[1]/div[" + str(orderednum + 1) + "]/div[1]")
             except:
-                print("时间 {}:00, 场地 {} 选取失败".format(ti, orderlist[i]))
+                print("时间 {}:00, 场地 {} 选取失败".format(ti, booking_order[i]))
                 continue
             else:
-                print("时间 {}:00, 场地 {} 选取成功\n\n".format(ti, orderlist[i]))
+                print("时间 {}:00, 场地 {} 选取成功\n\n".format(ti, booking_order[i]))
                 orderednum += 1
                 break
         else:
-            print("时间 {} 已经被抢完\n\n".format(ti))
+            print("时间 {}:00 的场地已经被抢完\n\n".format(ti))
         if orderednum == numtooder:
             print("成功抢到{}个场地!!!".format(orderednum))
             return orderednum
@@ -91,18 +90,18 @@ def orderPlaygroud(driver, tt=[17, 18], num=12, numtooder=2):
 
 
 class BadmintonCourtOrderer:
-    def __init__(self, url="https://sports.sjtu.edu.cn/pc/?locale=zh#/Venue/1", OrderTime=None):
+    def __init__(self, url="https://sports.sjtu.edu.cn/pc/?locale=zh#/Venue/1", OrderDate=None):
         from selenium import webdriver
         self.driver = webdriver.Chrome()
         self.driver.get(url)
-        if OrderTime is None:
+        if OrderDate is None:
             # 默认预定时间为今天后一周
             from datetime import datetime, timedelta
             day = datetime.now() + timedelta(days=7)
-            self.OrderTime = day.strftime("%Y-%m-%d")
+            self.OrderDate = day.strftime("%Y-%m-%d")
         else:
-            self.OrderTime = OrderTime
-        print("即将预定{}这一天的场地".format(self.OrderTime))
+            self.OrderDate = OrderDate
+        print("即将预定{}这一天的场地".format(self.OrderDate))
 
     def login(self, username="melan_thompson", password="xwp13030"):
         # try:
@@ -142,9 +141,9 @@ class BadmintonCourtOrderer:
         # 2s两个元素还没加载出来则刷新一下浏览器
         while True:
             try:
-                wait.until(lambda x: self.driver.find_element_by_id("tab-" + self.OrderTime),
+                wait.until(lambda x: self.driver.find_element_by_id("tab-" + self.OrderDate),
                            "场地加载超时")
-                self.driver.find_element_by_id("tab-" + self.OrderTime).click()
+                self.driver.find_element_by_id("tab-" + self.OrderDate).click()
                 path = xpathOfPlayground(12, 1)
                 # 点击场地,场地加载比较慢，所以需要等待
                 wait.until(lambda x: self.driver.find_element_by_xpath(path),
@@ -154,8 +153,8 @@ class BadmintonCourtOrderer:
             else:
                 return
 
-    def tickAndOrder(self, oderHour=[18, 19]):
-        if orderPlaygroud(self.driver, oderHour) > 0:
+    def tickAndOrder(self, orderTime=[18, 19],booking_order=[8, 3, 1, 2, 4, 5, 9, 7, 6, 10, 11, 12]):
+        if orderPlaygroud(self.driver, orderTime,booking_order=booking_order) > 0:
             # 点击下单
             self.driver.find_element_by_xpath(
                 "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div["
@@ -184,8 +183,13 @@ class BadmintonCourtOrderer:
 
 
 if __name__ == '__main__':
-    order = BadmintonCourtOrderer()
-    order.login(username="melan_thompson",password="xwp13030")
-    order.wait()
+    #读取json设置
+    import json
+    with open("setting.json", mode='r', encoding='UTF-8') as f:
+        setting = json.load(f)
+
+    order = BadmintonCourtOrderer(OrderDate=setting["date"])
+    order.login(username=setting["jaccount"],password=setting["password"])
+    # order.wait()
     order.refresh()
-    order.tickAndOrder([19, 20, 21])
+    order.tickAndOrder(orderTime=setting["order time"],booking_order=setting["booking order"])

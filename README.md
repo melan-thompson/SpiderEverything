@@ -36,3 +36,19 @@ Tesseract的安装分为两步：
 ## 谷歌浏览器ChroPath插件
 
 能够一键审查元素XPath、css的插件，再也不用自己去手动写了。
+
+## APP数据的爬取
+
+参考[^3][^5]
+
+
+
+
+
+# 参考文献
+
+[^1]:[（美）LINDSAY BASSETT著；魏嘉汛译.图灵程序设计丛书 JSON必知必会[M].北京：人民邮电出版社.2016.](https://book.duxiu.com/bookDetail.jsp?dxNumber=000030163180&d=4F0A3CF4EDDF6C8673E256D7CBB09AD0&fenlei=1817040302&sw=json%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A)
+[^2]:[唐松，陈智铨编著.Python网络爬虫从入门到实践[M].北京：机械工业出版社.2017.](https://book.duxiu.com/bookDetail.jsp?dxNumber=000016779339&d=B010419C1F95CAA000598D5541AFA9CD&fenlei=18170403010205&sw=python%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%AE%9E%E6%88%98)
+[^3]:[使用python抓取APP数据](https://blog.csdn.net/qq_37275405/article/details/81181439)
+[^4]:[（中国）东郭大猫.Scrapy网络爬虫实战[M].北京：清华大学出版社.2019.](https://book.duxiu.com/bookDetail.jsp?dxNumber=000018618625&d=C0F52B336A110031FBC52FEB2B1EF0D6&fenlei=18170403010205&sw=scrapy%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB)
+[^5]:[肖睿陈磊. Python网络爬虫[M]. 北京：人民邮电出版社, 2020.01. ](https://book.duxiu.com/bookDetail.jsp?dxNumber=000018836678&d=B7D241515EFC54622FF391712BE31A34&fenlei=18170403010205&sw=python%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB)

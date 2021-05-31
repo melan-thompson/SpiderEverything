@@ -1,0 +1,14 @@
+{
+  "jaccount":"melan_thompson",
+  "password": "xwp13030",
+  "date": "2021-06-05",
+  "court type": "羽毛球场",
+  "order time": [12,19,20,21],
+  "booking order":[8, 3, 1, 2, 4, 5, 9, 7, 6, 10, 11, 12],
+
+  "payment method": "微信支付",
+  "email to receive message": "1303061669@qq.com"
+
+}
+
+
