@@ -52,3 +52,6 @@ Tesseract的安装分为两步：
 [^3]:[使用python抓取APP数据](https://blog.csdn.net/qq_37275405/article/details/81181439)
 [^4]:[（中国）东郭大猫.Scrapy网络爬虫实战[M].北京：清华大学出版社.2019.](https://book.duxiu.com/bookDetail.jsp?dxNumber=000018618625&d=C0F52B336A110031FBC52FEB2B1EF0D6&fenlei=18170403010205&sw=scrapy%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB)
 [^5]:[肖睿陈磊. Python网络爬虫[M]. 北京：人民邮电出版社, 2020.01. ](https://book.duxiu.com/bookDetail.jsp?dxNumber=000018836678&d=B7D241515EFC54622FF391712BE31A34&fenlei=18170403010205&sw=python%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB)
+[^6]:[selenium-python](https://github.com/baijum/selenium-python)
+
+[^7]:[官方文档](https://www.selenium.dev/documentation/en/)

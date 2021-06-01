@@ -1,13 +1,15 @@
 {
   "jaccount":"melan_thompson",
   "password": "xwp13030",
-  "date": "2021-06-05",
+  "chrome driver directory": "../DependentSoftwares/chromedriver_win32_91.0.4472.19/chromedriver.exe",
+  "login method": "auto",
+  "date": "2021-06-01",
   "court type": "羽毛球场",
-  "order time": [12,19,20,21],
+  "order time": [20,21,12],
   "booking order":[8, 3, 1, 2, 4, 5, 9, 7, 6, 10, 11, 12],
 
   "payment method": "微信支付",
-  "email to receive message": "1303061669@qq.com"
+  "emails to receive message": ["1303061669@qq.com"]
 
 }
 
