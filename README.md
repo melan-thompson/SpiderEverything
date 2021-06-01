@@ -9,7 +9,7 @@
 1. python selenium 安装
 
 ```
-pip install selenium
+pip pip install selenium
 ```
 
 2. 下载对应的浏览器驱动，推荐[下载地址1](https://npm.taobao.org/mirrors/chromedriver/)，[下载地址2](http://chromedriver.storage.googleapis.com/index.html)，注意要下载跟浏览器对应版本的driver,然后复制到chrome.exe所在的文件夹下面，一般是C:\Program Files\Google\Chrome\Application，目录DependentSoftwares下有最新版本的Chrome driver。
