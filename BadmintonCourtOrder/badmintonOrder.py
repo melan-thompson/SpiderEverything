@@ -229,36 +229,51 @@ class BadmintonCourtOrderer:
     def tickAndOrder(self, orderTime=[18, 19], booking_order=[8, 3, 1, 2, 4, 5, 9, 7, 6, 10, 11, 12]):
         if orderPlaygroud(self.driver, orderTime, booking_order=booking_order) > 0:
             # 点击下单
-            self.driver.find_element_by_xpath(
-                "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div["
-                "3]/button[1]").click()
+            # waitByXpath(self.driver,"/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div[3]/button[1]").click()
+            # time.sleep(1)
+            button=self.driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div[3]/button[1]")
+            self.driver.execute_script("arguments[0].click();", button)
 
             # 点击本人已经阅读
             waitByXpath(self.driver, "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
                                      "1]/label[1]/span[1]/span[1]").click()
 
+
+
             # 下单
-            # self.driver.find_element_by_xpath(
-            #     "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
-            #     "2]/button[2]").click()
+            self.driver.find_element_by_xpath(
+                "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
+                "2]/button[2]").click()
         else:
             if self.refresh():
                 self.tickAndOrder(orderTime, booking_order)
 
-    def email(self, mail=["1303061669@qq.com"],paymethod="支付宝"):
+    def email(self, mailaddress=["1303061669@qq.com"]):
         """
         将微信或者支付宝支付的二维码图片发送到邮箱
         :param mail:
         :return:
         """
-        import sys
-        sys.path.append("../EmailSending")
+        try:
+            waitByXpath(self.driver,"/html[1]/body[1]/div[1]/div[2]/div[5]/div[2]/button[1]").click()
+            waitByXpath(self.driver,"/html[1]/body[1]/div[1]/div[2]/div[6]/div[1]/div[3]/span[1]/button[2]").click()
 
-        import EmailSender
-        email=EmailSender("羽毛球场预定成功通知")
-        email.usetemplate1("../Figure_4181.png")
-        email.send(mail)
-        pass
+            # 微信支付
+            waitByXpath(self.driver,"/html[1]/body[1]/table[3]/tbody[1]/tr[1]/td[1]/table[2]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[2]/td[1]/table[1]/tbody[1]/tr[8]/td[1]/input[2]").click()
+            waitByXpath(self.driver,"/html[1]/body[1]/div[4]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[1]/td[2]/table[1]/tbody[1]/tr[2]/td[2]").click()
+
+            waitByXpath(self.driver,"//div[@id='code_url']")
+            self.driver.find_element_by_xpath("//div[@id='code_url']").screenshot("paymentQRcode.png")
+        except Exception as e:
+            print(e)
+        else:
+            import sys
+            sys.path.append("../EmailSending")
+            from EmailSender import EmailMaster
+            email=EmailMaster(settingfile="../EmailSending/EmailSenderSetting.json",subject="羽毛球场预定成功通知")
+            email.usetemplate1("paymentQRcode.png")
+            email.send(mailaddress)
+            os.remove("paymentQRcode.png")
 
 
 if __name__ == '__main__':
@@ -273,3 +288,5 @@ if __name__ == '__main__':
     order.wait()
     order.refresh()
     order.tickAndOrder(orderTime=setting["order time"], booking_order=setting["booking order"])
+
+    order.email(setting["emails to receive message"])

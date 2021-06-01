@@ -3,7 +3,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
 
-
 def addimg(src, imgid):
     fp = open(src, 'rb')
     msgImage = MIMEImage(fp.read())
@@ -40,7 +39,7 @@ class EmailMaster:
                 <title></title>
                 </head>
                 <body><h1 id='场地预定成功通知'>场地预定成功通知</h1>
-                <p>您的羽毛球场地已经成功下单，请使用支付宝扫描下方的二维码进行支付：</p>
+                <p>您的羽毛球场地已经成功下单，请使用微信扫描下方的二维码进行支付：</p>
                 <p><img src="cid:image1" referrerpolicy="no-referrer" alt="Figure_4181"></p>
                 <p>感谢您的使用！期待下次与您见面，谢谢！</p>
                 <p>&nbsp;</p>
@@ -53,10 +52,12 @@ class EmailMaster:
         # print(self.message)
 
     def send(self, contacts=["1303061669@qq.com"]):
+        import time
         try:
             for each in contacts:
                 self.message["To"]=each
                 self.server.sendmail(self.emailaddress, each, self.message.as_string())
+                time.sleep(13)
         except Exception as e:
             print("Email sending error!!")
             print(e)
