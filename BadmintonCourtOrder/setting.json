@@ -5,7 +5,7 @@
   "login method": "auto",
   "date": null,
   "court type": "羽毛球场",
-  "order time": [19,20],
+  "order time": [18,19,20],
   "booking order":[8, 3, 1, 2, 4, 5, 9, 7, 6, 10, 11, 12],
 
   "payment method": "微信支付",
