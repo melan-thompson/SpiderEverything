@@ -57,7 +57,6 @@ class EmailMaster:
             for each in contacts:
                 self.message["To"]=each
                 self.server.sendmail(self.emailaddress, each, self.message.as_string())
-                time.sleep(13)
         except Exception as e:
             print("Email sending error!!")
             print(e)

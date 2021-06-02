@@ -155,10 +155,11 @@ class BadmintonCourtOrderer:
         else:
             # 预定时间转化为datetime
             # temp=datetime.strptime(OrderDate, '%Y-%m-%d')
-            deltime = self.deadline - datetime.strptime(OrderDate, '%Y-%m-%d')
-            if deltime > timedelta(days=8):
-                raise Exception("预定时间已过，只能预定{}之后的场地".format(datetime(now.year,now.month,now.day,0,0,0,0).strftime("%Y-%m-%d")))
-            elif deltime<timedelta(hours=-12):
+            # deltime = self.deadline - datetime.strptime(OrderDate, '%Y-%m-%d')
+            if datetime.strptime(OrderDate, '%Y-%m-%d')<datetime.strptime(now.strftime("%Y-%m-%d")):
+                raise Exception("预定时间已过，只能预定{}之后的场地".format(
+                    datetime(now.year, now.month, now.day, 0, 0, 0, 0).strftime("%Y-%m-%d")))
+            elif datetime.strptime(OrderDate, '%Y-%m-%d') > datetime.strptime(self.deadline.strftime("%Y-%m-%d")):
                 raise Exception("预定时间过早，过几天再来预定")
             else:
                 self.OrderDate = datetime.strptime(OrderDate, '%Y-%m-%d').strftime('%Y-%m-%d')
@@ -185,13 +186,13 @@ class BadmintonCourtOrderer:
 
     def wait(self):
         from datetime import datetime, timedelta
-        deltime=self.deadline-datetime.strptime(self.OrderDate, '%Y-%m-%d')
-        if deltime>timedelta(7):
+        now = datetime.now()
+        if self.deadline.strftime('%Y-%m-%d')==self.OrderDate and now + timedelta(days=7) < self.deadline:
             print("您预定的时间暂时还未开抢，请等待开抢！！")
             while True:
                 now = datetime.now()
-                print("现在是时间是{}，还有{}s开抢".format(now.strftime('%H:%M:%S'),(self.deadline-now).seconds))
-                if now>=self.deadline:
+                print("现在是时间是{}，还有{}s开抢".format(now.strftime('%H:%M:%S'), (self.deadline - now).seconds))
+                if now + timedelta(days=7) >= self.deadline:
                     time.sleep(0.01)  # 等待一下
                     self.driver.refresh()
                     return
@@ -215,7 +216,8 @@ class BadmintonCourtOrderer:
                 # WebDriverWait(self.driver, refreshIntervel, DetectFrequency).until(EC.presence_of_element_located((By.CSS_SELECTOR,"div.w:nth-child(2) div.lists:nth-child(2) div.chart div.clearfix:nth-child(2) > div.tables.fl.el-loading-parent--relative")))
                 # 等待加载中消失
                 WebDriverWait(self.driver, refreshIntervel, DetectFrequency).until(EC.invisibility_of_element_located((
-                                                                                   By.CSS_SELECTOR,"div.w:nth-child(2) div.lists:nth-child(2) div.chart div.clearfix:nth-child(2) > div.tables.fl.el-loading-parent--relative")))
+                    By.CSS_SELECTOR,
+                    "div.w:nth-child(2) div.lists:nth-child(2) div.chart div.clearfix:nth-child(2) > div.tables.fl.el-loading-parent--relative")))
                 # WebDriverWait(self.driver, refreshIntervel, DetectFrequency).until(EC.staleness_of((By.CSS_SELECTOR,"div.w:nth-child(2) div.lists:nth-child(2) div.chart div.clearfix:nth-child(2) > div.tables.fl.el-loading-parent--relative" )))
 
                 # 等待场地可以按
@@ -231,14 +233,13 @@ class BadmintonCourtOrderer:
             # 点击下单
             # waitByXpath(self.driver,"/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div[3]/button[1]").click()
             # time.sleep(1)
-            button=self.driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div[3]/button[1]")
+            button = self.driver.find_element_by_xpath(
+                "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div[3]/button[1]")
             self.driver.execute_script("arguments[0].click();", button)
 
             # 点击本人已经阅读
             waitByXpath(self.driver, "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
                                      "1]/label[1]/span[1]/span[1]").click()
-
-
 
             # 下单
             self.driver.find_element_by_xpath(
@@ -255,14 +256,16 @@ class BadmintonCourtOrderer:
         :return:
         """
         try:
-            waitByXpath(self.driver,"/html[1]/body[1]/div[1]/div[2]/div[5]/div[2]/button[1]").click()
-            waitByXpath(self.driver,"/html[1]/body[1]/div[1]/div[2]/div[6]/div[1]/div[3]/span[1]/button[2]").click()
+            waitByXpath(self.driver, "/html[1]/body[1]/div[1]/div[2]/div[5]/div[2]/button[1]").click()
+            waitByXpath(self.driver, "/html[1]/body[1]/div[1]/div[2]/div[6]/div[1]/div[3]/span[1]/button[2]").click()
 
             # 微信支付
-            waitByXpath(self.driver,"/html[1]/body[1]/table[3]/tbody[1]/tr[1]/td[1]/table[2]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[2]/td[1]/table[1]/tbody[1]/tr[8]/td[1]/input[2]").click()
-            waitByXpath(self.driver,"/html[1]/body[1]/div[4]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[1]/td[2]/table[1]/tbody[1]/tr[2]/td[2]").click()
+            waitByXpath(self.driver,
+                        "/html[1]/body[1]/table[3]/tbody[1]/tr[1]/td[1]/table[2]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[2]/td[1]/table[1]/tbody[1]/tr[8]/td[1]/input[2]").click()
+            waitByXpath(self.driver,
+                        "/html[1]/body[1]/div[4]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/table[1]/tbody[1]/tr[1]/td[2]/table[1]/tbody[1]/tr[2]/td[2]").click()
 
-            waitByXpath(self.driver,"//div[@id='code_url']")
+            waitByXpath(self.driver, "//div[@id='code_url']")
             self.driver.find_element_by_xpath("//div[@id='code_url']").screenshot("paymentQRcode.png")
         except Exception as e:
             print(e)
@@ -270,7 +273,7 @@ class BadmintonCourtOrderer:
             import sys
             sys.path.append("../EmailSending")
             from EmailSender import EmailMaster
-            email=EmailMaster(settingfile="../EmailSending/EmailSenderSetting.json",subject="羽毛球场预定成功通知")
+            email = EmailMaster(settingfile="../EmailSending/EmailSenderSetting.json", subject="羽毛球场预定成功通知")
             email.usetemplate1("paymentQRcode.png")
             email.send(mailaddress)
             os.remove("paymentQRcode.png")
@@ -279,6 +282,7 @@ class BadmintonCourtOrderer:
 if __name__ == '__main__':
     # 读取json设置
     import json
+
     with open("setting.json", mode='r', encoding='UTF-8') as f:
         setting = json.load(f)
 
