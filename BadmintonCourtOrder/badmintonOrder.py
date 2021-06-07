@@ -233,6 +233,7 @@ class BadmintonCourtOrderer:
             # 点击下单
             # waitByXpath(self.driver,"/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div[3]/button[1]").click()
             # time.sleep(1)
+            # oldurl = self.driver.current_url
             button = self.driver.find_element_by_xpath(
                 "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]/div[3]/button[1]")
             self.driver.execute_script("arguments[0].click();", button)
@@ -245,6 +246,18 @@ class BadmintonCourtOrderer:
             self.driver.find_element_by_xpath(
                 "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div[1]/div["
                 "2]/button[2]").click()
+
+            try:
+                self.driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[5]/div[2]/button[1]")
+            except:
+                if self.refresh():
+                    self.tickAndOrder(orderTime, booking_order)
+
+            # #如果没有跳转的话
+            # if self.driver.current_url==oldurl:
+            #     if self.refresh():
+            #         self.tickAndOrder(orderTime, booking_order)
+
         else:
             if self.refresh():
                 self.tickAndOrder(orderTime, booking_order)
