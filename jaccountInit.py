@@ -19,4 +19,5 @@ if __name__=="__main__":
     with open("jaccount.json",'w') as fp:
         fp.write(json.dumps(setting, indent=4))
 
-    with open("./BadmintonCourtOrder/setting.json") as f:
+    print("jaccount is: ",b64decoding(setting["jaccount"]))
+    print("password is: ",b64decoding(setting["password"]))

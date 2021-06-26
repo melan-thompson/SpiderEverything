@@ -156,10 +156,10 @@ class BadmintonCourtOrderer:
             # 预定时间转化为datetime
             # temp=datetime.strptime(OrderDate, '%Y-%m-%d')
             # deltime = self.deadline - datetime.strptime(OrderDate, '%Y-%m-%d')
-            if datetime.strptime(OrderDate, '%Y-%m-%d')<datetime.strptime(now.strftime("%Y-%m-%d")):
+            if datetime.strptime(OrderDate, '%Y-%m-%d')<datetime.strptime(now.strftime("%Y-%m-%d"),'%Y-%m-%d'):
                 raise Exception("预定时间已过，只能预定{}之后的场地".format(
                     datetime(now.year, now.month, now.day, 0, 0, 0, 0).strftime("%Y-%m-%d")))
-            elif datetime.strptime(OrderDate, '%Y-%m-%d') > datetime.strptime(self.deadline.strftime("%Y-%m-%d")):
+            elif datetime.strptime(OrderDate, '%Y-%m-%d') > datetime.strptime(self.deadline.strftime("%Y-%m-%d"),'%Y-%m-%d'):
                 raise Exception("预定时间过早，过几天再来预定")
             else:
                 self.OrderDate = datetime.strptime(OrderDate, '%Y-%m-%d').strftime('%Y-%m-%d')
@@ -248,15 +248,13 @@ class BadmintonCourtOrderer:
                 "2]/button[2]").click()
 
             try:
-                self.driver.find_element_by_xpath("/html[1]/body[1]/div[1]/div[2]/div[5]/div[2]/button[1]")
-            except:
+                #如果没有跳转则继续刷新
+                waitByXpath(self.driver,"//body/div[@id='app']/div[@id='orderDetails']/div[4]",1)
+                # self.driver.find_element_by_xpath("//body/div[@id='app']/div[@id='orderDetails']/div[4]")
+            except Exception as e:
+                print(e)
                 if self.refresh():
                     self.tickAndOrder(orderTime, booking_order)
-
-            # #如果没有跳转的话
-            # if self.driver.current_url==oldurl:
-            #     if self.refresh():
-            #         self.tickAndOrder(orderTime, booking_order)
 
         else:
             if self.refresh():
