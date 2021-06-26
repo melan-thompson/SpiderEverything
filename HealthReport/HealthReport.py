@@ -92,10 +92,15 @@ def SJTULogin(driver, username="melan_thompson", password="xwp13030", loginMetho
     return driver
 
 
+def b64decoding(string):
+    import base64
+    return base64.b64decode(str.encode(string)).decode()
+
+
 if __name__ == '__main__':
     import json
 
-    with open("HealthReportSetting.json", mode='r', encoding='UTF-8') as f:
+    with open("../jaccount.json", mode='r', encoding='UTF-8') as f:
         setting = json.load(f)
 
     desired_capabilities = DesiredCapabilities.CHROME  # 修改页面加载策略
@@ -103,7 +108,7 @@ if __name__ == '__main__':
 
     driver = webdriver.Chrome(setting["chrome driver directory"])
     driver.get("https://ssc.sjtu.edu.cn/f/dae8d35a")
-    SJTULogin(driver,username=setting["jaccount"],password=setting["password"])
+    SJTULogin(driver,username=b64decoding(setting["jaccount"]),password=b64decoding(setting["password"]))
 
     waitByXpath(driver,"/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply["
         "1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[3]/div[2]/qform-pc-form-control[1]/div[1]/div["

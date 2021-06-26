@@ -62,63 +62,22 @@ def addimg(src,imgid):
     msgImage.add_header('Content-ID', imgid)
     return msgImage
 
+def b64encoding(string):
+    import base64
+    return base64.b64encode(str.encode(string)).decode()
+
+def b64decoding(string):
+    import base64
+    return base64.b64decode(str.encode(string)).decode()
+
 if __name__ == '__main__':
-    # import json
-    #
-    # with open("BadmintonCourtOrder/setting.json", mode='r', encoding='UTF-8') as f:
-    #     setting = json.load(f)
-    #
-    # print(setting["login method"])
-    import smtplib
-    from email.mime.text import MIMEText
+   import base64
+   a=b64encoding("melan_thompson")
+   print(a)
+   b=b64decoding(a)
+   print(b)
 
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-    from email.mime.image import MIMEImage
-
-    msg_from = '18373173350@163.com'  # 发送方邮箱
-    passwd = 'xwp13030'  # 填入发送方邮箱的授权码
-    passwd2="JYSQRSLFYZETICQW"
-    msg_to = '1303061669@qq.com'  # 收件人邮箱
-    mail_host = 'smtp.163.com'
-
-    def send():
-        subject = "python邮件测试"  # 主题
-        msg = MIMEMultipart('related')
-        cont="""
-        <!doctype html>
-        <html>
-        <head>
-        <meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
-        <title></title>
-        </head>
-        <body><h1 id='场地预定成功通知'>场地预定成功通知</h1>
-        <p>您的羽毛球场地已经成功下单，请使用支付宝扫描下方的二维码进行支付：</p>
-        <p><img src="cid:image1" referrerpolicy="no-referrer" alt="Figure_4181"></p>
-        <p>感谢您的使用！期待下次与您见面，谢谢！</p>
-        <p>&nbsp;</p>
-        </body>
-        </html>
-        """
-
-        content = MIMEText(cont, 'html', 'utf-8')  # 正文
-        # msg = MIMEText(content)
-        msg.attach(content)
-        msg['Subject'] = subject
-        msg['From'] = msg_from
-        msg['To'] = msg_to
-
-        msg.attach(addimg("Figure_4181.png",'image1'))
-
-
-        try:
-            s = smtplib.SMTP_SSL(mail_host, 465)  # 邮件服务器及端口号
-            # s = smtplib.SMTP(host=mail_host)
-            s.login(msg_from, passwd2)
-            s.sendmail(msg_from, msg_to, msg.as_string())
-            print("Done")
-        except Exception as e:
-            print(e)
-    send()
-
+def b64encoding(string):
+    import base64
+    return base64(str.encode(string))
 

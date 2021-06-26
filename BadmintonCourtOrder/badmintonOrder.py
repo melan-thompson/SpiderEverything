@@ -292,6 +292,10 @@ class BadmintonCourtOrderer:
             os.remove("paymentQRcode.png")
 
 
+def b64decoding(string):
+    import base64
+    return base64.b64decode(str.encode(string)).decode()
+
 if __name__ == '__main__':
     # 读取json设置
     import json
@@ -299,8 +303,11 @@ if __name__ == '__main__':
     with open("setting.json", mode='r', encoding='UTF-8') as f:
         setting = json.load(f)
 
-    order = BadmintonCourtOrderer(OrderDate=setting["date"], chrome_driver_dirc=setting["chrome driver directory"])
-    order.login(username=setting["jaccount"], password=setting["password"], loginMethod=setting["login method"])
+    with open("../jaccount.json", mode='r', encoding='UTF-8') as f:
+        setting1 = json.load(f)
+
+    order = BadmintonCourtOrderer(OrderDate=setting["date"], chrome_driver_dirc=setting1["chrome driver directory"])
+    order.login(username=b64decoding(setting1["jaccount"]), password=b64decoding(setting1["password"]), loginMethod=setting["login method"])
 
     order.wait()
     order.refresh()
