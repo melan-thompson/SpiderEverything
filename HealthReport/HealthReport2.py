@@ -14,9 +14,6 @@ def waitByXpath(driver, XPATH="", waitTime=5, frequency=0.1):
 def waitById(driver, XPATH="", waitTime=5, frequency=0.1):
     return WebDriverWait(driver, waitTime, frequency).until(EC.element_to_be_clickable((By.ID, XPATH)))
 
-def waitByCSS(driver, XPATH="", waitTime=5, frequency=0.1):
-    return WebDriverWait(driver, waitTime, frequency).until(EC.element_to_be_clickable((By.CSS_SELECTOR, XPATH)))
-
 
 def captchaOCR(filename, threshold=200):
     """
@@ -113,46 +110,18 @@ if __name__ == '__main__':
     driver.get("https://ssc.sjtu.edu.cn/f/dae8d35a")
     SJTULogin(driver,username=b64decoding(setting["jaccount"]),password=b64decoding(setting["password"]))
 
-
-    waitByXpath(driver,"/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]",20)
+    waitByXpath(driver,"/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply["
+        "1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[3]/div[2]/qform-pc-form-control[1]/div[1]/div["
+        "2]/qform-pc-radio[1]/qform-pc-radio-accessor[1]/div[1]/label[1]/span[1]",20)
 
     # 记录当前url
     url1 = driver.current_url
 
     # 点击
-    # waitByXpath(driver,"//body/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[9]/div[1]/qform-pc-form-control[1]/div[1]/div[3]/qform-address[1]/qform-address-accessor[1]/nz-cascader[1]/div[1]/div[1]/input[1]",20)
-
-    # driver.find_element_by_xpath(
-    #     "/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[3]/div[2]/qform-pc-form-control[1]/div[1]/div[2]/qform-pc-radio[1]/qform-pc-radio-accessor[1]/div[1]/label[1]/span[1]").click()
-    # driver.find_element_by_xpath(
-    #     "/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/div[2]/button[2]").click()
-
-    driver.find_element_by_xpath("//body/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[9]/div[1]/qform-pc-form-control[1]/div[1]/div[3]/qform-address[1]/qform-address-accessor[1]/nz-cascader[1]/div[1]/div[1]/i[1]/*[1]").click()
-
-    try:
-        waitByXpath(driver,"/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/ul[1]/li[10]").click()
-        waitByXpath(driver, "/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/ul[1]/li[9]").click()
-    except:
-        waitByXpath(driver,"/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/ul[1]/li[9]").click()
-    # waitByXpath(driver,"//body/div[2]/div[2]/div[1]/div[1]/ul[1]/li[9]/span[2]/i[1]/*[1]").click()
-
-    # 上海市
-    try:
-        waitByXpath(driver,"/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/ul[2]/li[1]").click()
-    except:
-        driver.find_element_by_xpath("//body/div[2]/div[2]/div[1]/div[1]/ul[2]/li[1]/span[2]/i[1]/*[1]").click()
-
-    # 闵行区
-    waitByXpath(driver,"//body/div[2]/div[2]/div[1]/div[1]/ul[3]/li[8]").click()
-
-    time.sleep(3)
-    waitByCSS(driver,"qf-pages.ng-star-inserted:nth-child(2) qf-app-item.ng-star-inserted:nth-child(2) qf-app-initiate.ng-star-inserted:nth-child(2) div.initiate-content div.initiate-form-content qf-initiate-apply:nth-child(1) div.main-content.ng-star-inserted div.form-wrapper div.form-footer:nth-child(3) > button.ant-btn.ant-btn-primary").click()
-
-    # driver.find_element_by_css_selector("qf-pages.ng-star-inserted:nth-child(2) qf-app-item.ng-star-inserted:nth-child(2) qf-app-initiate.ng-star-inserted:nth-child(2) div.initiate-content div.initiate-form-content qf-initiate-apply:nth-child(1) div.main-content.ng-star-inserted div.form-wrapper div.form-footer:nth-child(3) > button.ant-btn.ant-btn-primary").click()
-    # driver.find_element_by_xpath("//body/div[2]/div[4]/div[1]/div[1]/div[2]/div[1]/qf-apply-side-modal[1]/div[1]/div[3]/qf-initiate-apply[1]/div[1]/div[1]/div[2]/button[2]").click()
-    #
-    # waitByXpath(driver,"/html[1]/body[1]/div[2]/div[4]/div[1]/div[1]/div[2]/div[1]/qf-apply-side-modal[1]/div[1]/div[3]/qf-initiate-apply[1]/div[1]/div[1]/div[2]/button[2]").click()
-    # driver.find_element_by_xpath("//body/div[2]/div[2]/div[1]/div[1]/ul[1]/li[9]/span[2]/i[1]/*[1]").click()
+    driver.find_element_by_xpath(
+        "/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[3]/div[2]/qform-pc-form-control[1]/div[1]/div[2]/qform-pc-radio[1]/qform-pc-radio-accessor[1]/div[1]/label[1]/span[1]").click()
+    driver.find_element_by_xpath(
+        "/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/div[2]/button[2]").click()
 
     # 跳转之后证明填写成功
     while True:

@@ -249,7 +249,7 @@ class BadmintonCourtOrderer:
 
             try:
                 #如果没有跳转则继续刷新
-                waitByXpath(self.driver,"//body/div[@id='app']/div[@id='orderDetails']/div[4]",1)
+                waitByXpath(self.driver,"//body/div[@id='app']/div[@id='orderDetails']/div[5]/div[2]/button[1]",10)
                 # self.driver.find_element_by_xpath("//body/div[@id='app']/div[@id='orderDetails']/div[4]")
             except Exception as e:
                 print(e)

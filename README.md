@@ -1,6 +1,6 @@
 # SpiderEverything
 
-
+运行前先点击preRun.bat设置jaccount，为了防止jaccount泄露采用加密的方式，
 
 # 运行环境
 

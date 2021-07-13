@@ -1,7 +1,7 @@
 {
   "chrome driver directory": "../DependentSoftwares/chromedriver_win32_91.0.4472.19/chromedriver.exe",
   "login method": "auto",
-  "date": "2021-06-30",
+  "date": null,
   "court type": "羽毛球场",
   "order time": [18,19,20],
   "booking order":[8, 7, 6, 2, 4, 5, 9, 3, 1, 10, 11, 12],
