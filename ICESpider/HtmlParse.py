@@ -42,8 +42,6 @@ def matchword(word,document):
     else: return False
 
 class Table():
-    
-
     def __init__(self,table_name,table_contents):
         self.table_name=table_name
         self.table_contents=table_contents

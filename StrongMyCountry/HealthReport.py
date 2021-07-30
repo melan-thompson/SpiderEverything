@@ -121,8 +121,10 @@ def XpathOfVideo(row, col):
 
 
 class StrongMyCountry:
-    def __init__(self, driver1):
+    def __init__(self, driver1, ArticlesRead=[], VideoWatch=[]):
         self.driver = driver1
+        self.articAlreadyRead = ArticlesRead
+        self.videoAlreadyWatch = VideoWatch
 
     def login(self):
         # 点击我的学习
@@ -134,13 +136,15 @@ class StrongMyCountry:
         # 扫描二维码，点击学习积分
         waitByXpath(self.driver,
                     "/html[1]/body[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/a[3]/div[1]/div[1]/div[1]",
-                    30).click()
+                    600).click()
         self.MyxuexiPage = self.driver.window_handles[-1]
 
         self.driver.switch_to.window(self.driver.window_handles[-1])
+
+        self.driver.get("https://www.xuexi.cn/")
         # 点击选读文章
-        waitByCSS(self.driver,
-                  "div.layout-body div.my-points div.my-points-section:nth-child(3) div.my-points-content div.my-points-card:nth-child(2) div.my-points-card-footer div.buttonbox > div.big").click()
+        # waitByCSS(self.driver,
+        #           "div.layout-body div.my-points div.my-points-section:nth-child(3) div.my-points-content div.my-points-card:nth-child(2) div.my-points-card-footer div.buttonbox > div.big").click()
 
         self.driver.switch_to.window(self.driver.window_handles[-1])
         self.xuexiPage = self.driver.window_handles[-1]
@@ -156,12 +160,21 @@ class StrongMyCountry:
         self.articlepage = self.driver.window_handles[-1]
         self.driver.switch_to.window(self.articlepage)
 
-        for i in range(6):
-            self.driver.switch_to.window(self.articlepage)
-            waitByXpath(driver, XpathOfArticle(i + 1)).click()
-            self.driver.switch_to.window(self.driver.window_handles[-1])
-            time.sleep(readtime)
-            self.driver.close()
+        readArticleNum=0
+
+        while readArticleNum<6:
+            for i in range(20):
+                waitByXpath(driver, XpathOfArticle(i + 1)).click()
+                self.driver.switch_to.window(self.driver.window_handles[-1])
+                waitByXpath(self.driver,"//body/div[@id='root']/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/div[2]/section[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]")
+                if self.driver.current_url not in self.articAlreadyRead:
+                    time.sleep(readtime)
+                    self.articAlreadyRead.append(self.driver.current_url)
+                    readArticleNum+=1
+                self.driver.close()
+                self.driver.switch_to.window(self.articlepage)
+            waitByXpath(self.driver,"//div[contains(text(),'>>')]").click()
+        print("already read {} articles".format(readArticleNum))
 
     def switchToMyScorePage(self):
         self.driver.switch_to.window(self.MyxuexiPage)
@@ -173,12 +186,24 @@ class StrongMyCountry:
         self.driver.get(
             "https://www.xuexi.cn/4426aa87b0b64ac671c96379a3a8bd26/db086044562a57b441c24f2af1c8e101.html#1novbsbi47k-5")
 
-        self.videopage=self.driver.window_handles[-1]
+        self.videopage = self.driver.window_handles[-1]
         self.driver.switch_to.window(self.videopage)
+
         for i in range(4):
             for j in range(4):
                 self.driver.switch_to.window(self.videopage)
-                waitByXpath(self.driver,XpathOfVideo(i+1,j+1)).click()
+                waitByXpath(self.driver, XpathOfVideo(i + 1, j + 1)).click()
+                self.driver.switch_to.window(self.driver.window_handles[-1])
+                time.sleep(watchtime)
+                self.driver.close()
+
+        self.driver.switch_to.window(self.videopage)
+        waitByXpath(self.driver, "//div[contains(text(),'>>')]").click()
+
+        for i in range(4):
+            for j in range(4):
+                self.driver.switch_to.window(self.videopage)
+                waitByXpath(self.driver, XpathOfVideo(i + 1, j + 1)).click()
                 self.driver.switch_to.window(self.driver.window_handles[-1])
                 time.sleep(watchtime)
                 self.driver.close()
@@ -201,11 +226,21 @@ if __name__ == '__main__':
     driver = webdriver.Chrome(setting["chrome driver directory"])
     driver.get("https://www.xuexi.cn/")
 
-    C = StrongMyCountry(driver)
+    with open("data.json", mode='r', encoding='UTF-8') as f:
+        data = json.load(f)
+
+    C = StrongMyCountry(driver, data["articles"], data["videos"])
+
     C.login()
-    # C.readArticle(1)
-    # C.switchToxuexiPage()
-    C.watchvideo(70)
+    C.readArticle(65)
+    C.switchToxuexiPage()
+    C.watchvideo(65)
+
+    data["articles"] = C.articAlreadyRead
+    data["videos"]=C.videoAlreadyWatch
+    with open("data.json", "w") as f:
+        f.write(json.dumps(data,indent=4))
+
 
     # # #点击我的学习
     # # waitByXpath(driver,"/html[1]/body[1]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/div[4]/section[1]/div[2]").click()

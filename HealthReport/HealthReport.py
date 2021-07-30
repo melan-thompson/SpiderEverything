@@ -114,7 +114,7 @@ if __name__ == '__main__':
     SJTULogin(driver,username=b64decoding(setting["jaccount"]),password=b64decoding(setting["password"]))
 
 
-    waitByXpath(driver,"/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]",20)
+    waitByXpath(driver,"/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]",120)
 
     # 记录当前url
     url1 = driver.current_url
@@ -127,8 +127,13 @@ if __name__ == '__main__':
     # driver.find_element_by_xpath(
     #     "/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/div[2]/button[2]").click()
 
-    driver.find_element_by_xpath("//body/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[9]/div[1]/qform-pc-form-control[1]/div[1]/div[3]/qform-address[1]/qform-address-accessor[1]/nz-cascader[1]/div[1]/div[1]/i[1]/*[1]").click()
-
+    time.sleep(1)
+    next_btn=driver.find_element_by_xpath("/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[11]/div[1]/qform-pc-form-control[1]/div[1]/div[3]/qform-address[1]/qform-address-accessor[1]/nz-cascader[1]/div[1]/div[1]/span[1]")
+    webdriver.ActionChains(driver).move_to_element(next_btn).click(next_btn).perform()
+    # driver.execute_script("arguments[0].click();", next_btn)
+    # waitByXpath(driver,"//body/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[9]/div[1]/qform-pc-form-control[1]/div[1]/div[3]/qform-address[1]/qform-address-accessor[1]/nz-cascader[1]/div[1]/div[1]/i[1]/*[1]").click()
+    # waitByXpath(driver,"//body/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[11]/div[1]/qform-pc-form-control[1]/div[1]/div[3]/qform-address[1]/qform-address-accessor[1]/nz-cascader[1]/div[1]/div[1]/input[1]").click()
+    # waitByXpath(driver,"//body/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[11]/div[1]/qform-pc-form-control[1]/div[1]/div[3]/qform-address[1]/qform-address-accessor[1]/nz-cascader[1]/div[1]/div[1]/i[1]/*[1]").click()
     try:
         waitByXpath(driver,"/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/ul[1]/li[10]").click()
         waitByXpath(driver, "/html[1]/body[1]/div[2]/div[2]/div[1]/div[1]/ul[1]/li[9]").click()
@@ -145,8 +150,13 @@ if __name__ == '__main__':
     # 闵行区
     waitByXpath(driver,"//body/div[2]/div[2]/div[1]/div[1]/ul[3]/li[8]").click()
 
+    # 返校计划
+    waitByXpath(driver,"/html[1]/body[1]/qf-root[1]/qf-pages[1]/qf-app-item[1]/qf-app-initiate[1]/div[1]/div[1]/qf-initiate-apply[1]/div[1]/div[1]/qform-pc-form[1]/div[1]/div[20]/div[1]/qform-pc-form-control[1]/div[1]/div[2]/qform-pc-select[1]/qform-pc-select-accessor[1]/nz-select[1]/nz-select-top-control[1]").click()
+    waitByXpath(driver,"/html[1]/body[1]/div[2]/div[2]/div[1]/nz-option-container[1]/div[1]/cdk-virtual-scroll-viewport[1]/div[1]/nz-option-item[1]").click()
+
     time.sleep(3)
     waitByCSS(driver,"qf-pages.ng-star-inserted:nth-child(2) qf-app-item.ng-star-inserted:nth-child(2) qf-app-initiate.ng-star-inserted:nth-child(2) div.initiate-content div.initiate-form-content qf-initiate-apply:nth-child(1) div.main-content.ng-star-inserted div.form-wrapper div.form-footer:nth-child(3) > button.ant-btn.ant-btn-primary").click()
+
 
     # driver.find_element_by_css_selector("qf-pages.ng-star-inserted:nth-child(2) qf-app-item.ng-star-inserted:nth-child(2) qf-app-initiate.ng-star-inserted:nth-child(2) div.initiate-content div.initiate-form-content qf-initiate-apply:nth-child(1) div.main-content.ng-star-inserted div.form-wrapper div.form-footer:nth-child(3) > button.ant-btn.ant-btn-primary").click()
     # driver.find_element_by_xpath("//body/div[2]/div[4]/div[1]/div[1]/div[2]/div[1]/qf-apply-side-modal[1]/div[1]/div[3]/qf-initiate-apply[1]/div[1]/div[1]/div[2]/button[2]").click()
