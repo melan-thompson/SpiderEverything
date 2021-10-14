@@ -109,7 +109,7 @@ if __name__ == '__main__':
     desired_capabilities = DesiredCapabilities.CHROME  # 修改页面加载策略
     desired_capabilities["pageLoadStrategy"] = "none"  # 注释这两行会导致最后输出结果的延迟，即等待页面加载完成再输出
 
-    driver = webdriver.Chrome(setting["chrome driver directory"])
+    driver = webdriver.Chrome()
     driver.get("https://ssc.sjtu.edu.cn/f/dae8d35a")
     SJTULogin(driver,username=b64decoding(setting["jaccount"]),password=b64decoding(setting["password"]))
 

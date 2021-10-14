@@ -1,5 +1,5 @@
 {
-  "chrome driver directory": "../DependentSoftwares/chromedriver_win32_91.0.4472.19/chromedriver.exe",
+  "chrome driver directory": "../DependentSoftwares/chromedriver_win32/chromedriver.exe",
   "login method": "auto",
   "date": null,
   "court type": "羽毛球场",

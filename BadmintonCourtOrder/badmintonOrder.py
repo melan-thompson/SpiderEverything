@@ -140,8 +140,11 @@ class BadmintonCourtOrderer:
 
         desired_capabilities = DesiredCapabilities.CHROME  # 修改页面加载策略
         desired_capabilities["pageLoadStrategy"] = "none"  # 注释这两行会导致最后输出结果的延迟，即等待页面加载完成再输出
+        # import os
+        # os.system(chrome_driver_dirc)
 
-        self.driver = webdriver.Chrome(chrome_driver_dirc)
+        # self.driver = webdriver.Chrome(executable_path=chrome_driver_dirc)
+        self.driver = webdriver.Chrome()
         self.driver.get(url)
 
         # 计算预定时间
@@ -179,7 +182,8 @@ class BadmintonCourtOrderer:
                     "/html[1]/body[1]/div[1]/div[2]/div[2]/div[2]/div[1]/div[1]/div[1]/ul[1]/li[5]/a[1]/img[1]").click()
         # 点击霍英东
         time.sleep(0.5)
-        waitByXpath(self.driver, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[5]/div[2]/ul[1]/li[1]/div[1]").click()
+        # waitByXpath(self.driver, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[5]/div[2]/ul[1]/li[1]/div[1]").click()
+        waitByXpath(self.driver, "/html[1]/body[1]/div[1]/div[2]/div[1]/div[5]/div[2]/ul[1]/li[2]/div[1]").click()
 
         time.sleep(0.5)
         self.driver.refresh()
